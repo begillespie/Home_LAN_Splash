@@ -116,6 +116,7 @@ h1 {
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
+	visibility: hidden;
 }
 .down{
 	background-color: #f33;
