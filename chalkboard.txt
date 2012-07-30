@@ -1,0 +1,3 @@
+Here is the chalkboard!
+
+Leave notes on it. When you click out of this box, it will save automatically!

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Gillespie House</title>
+		<script type="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="script.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	</head>
+	<body>
+		<div id="content">
+			<div id="header">
+				<h1>Gadgets!!!</h1>
+			</div>
+				<div id="calendar">	
+	<!--Paste the embed link for your calendar here. The spacing and alignment of the document works best with a calendar that is 800px by 600px or less-->
+					<iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=en.usa%23holiday%40group.v.calendar.google.com&amp;color=%23AB8B00&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe>
+				</div>
+
+				<div id="chalkboard_container">
+					<textarea id="chalkboard"></textarea>
+				</div>
+			<div id="left_column">
+				<ul id="xbmc" class="type" >
+					<li class="buttonwrapper">
+						<div class="button" id="xbmc_living_room">
+							<p>Living Room</p>
+							<div class="status"></div>
+						</div>
+					</li>
+					<li class="buttonwrapper">
+						<div class="button" id="xbmc_upstairs">
+							<p>Upstairs</p>
+							<div class="status"></div>
+						</div>
+					</li>
+					<li class="buttonwrapper">
+						<div class="button" id="xbmc_bedroom">
+							<p>Bedroom</p>
+							<div class="status"></div>
+						</div>
+					</li>
+				</ul>	
+			</div>
+
+			<div id="right_column">
+				<ul id="services" class="type">
+					<li class="buttonwrapper">
+						<div class="button" id="utorrent">
+							<p>µTorrent</p>
+							<div class="status"></div>
+						</div>
+					</li>
+					<li class="buttonwrapper">
+						<div class="button" id="nas">
+							<p>Fileserver</p>
+							<div class="status down"></div>
+						</div>
+					</li>
+				</ul>
+				<ul id="routers" class="type">
+					<li class="buttonwrapper">
+						<div class="button" id="router1">
+							<p>Upstairs Router</p>
+							<div class="status"></div>
+						</div>
+					</li>
+					<li class="buttonwrapper">
+						<div class="button" id="router2">
+							<p>Downstairs Router</p>
+							<div class="status"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+					
+			<div id="footer">
+				<ul>
+					<li>"Get out of Dad's chair!"</li>
+					<li class="version">version: 28July2012</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
