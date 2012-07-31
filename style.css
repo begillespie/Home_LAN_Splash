@@ -21,7 +21,7 @@ h1 {
 }
 @font-face {
     font-family: "Chalkboard";
-    src: url("whatever it takes.ttf"); /* http://www.fontspace.com/brittney-murphy/whatever-it-takes */
+/*    src: url("whatever it takes.ttf"); /* http://www.fontspace.com/brittney-murphy/whatever-it-takes */
  }
 #chalkboard_container {
 	display: inline-block;
@@ -29,7 +29,7 @@ h1 {
 }
 #chalkboard{
 	width: 360px;
-	height: 570px;
+	height: 572px;
 	padding: 5px;
 	border: solid #630 10px;
 	background: #3B653D;
@@ -50,16 +50,16 @@ h1 {
 	border-radius: 10px;
 }
 #xbmc .button{
-	background-image: url("images/xbmc-logo.png");
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/xbmc-logo.png");
 }
 #utorrent.button{
-	background-image: url("images/utorrent_icon.png");
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/utorrent_icon.png");
 }
 #nas.button{
-	background-image: url("images/server.png");
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/Server.png");
 }
 #routers .button{
-	background-image: url("images/wi-fi.png");
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/wi-fi.png");
 }
 .buttonwrapper {
 	padding: 15px;
@@ -116,7 +116,7 @@ h1 {
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
-	visibility: hidden;
+	visibility: hidden; /*TODO: make the status light feature work!!*/
 }
 .down{
 	background-color: #f33;

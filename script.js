@@ -1,25 +1,45 @@
 //tested in Chrome 22.0.1207.1
 //The jqueryui bounce effect misbehaves in IE and Firefox
-//Version: 0.5 29July2012
+//Version:  0.6 30July2012
+//https://github.com/begillespie/Home_LAN_Splash.git
 
-var networkResources = {
-	"xbmc_living_room" : "192.168.1.101:8080", //the form for each element is "id" : "address"
-	"xbmc_upstairs" : "192.168.1.104:8080",
-	"xbmc_bedroom" : "192.168.1.111:8080",
-	"utorrent" : "192.168.1.100:8080/gui",
-	"nas" : "192.168.1.103",
-	"router1" : "192.168.1.1",
-	"router2" : "192.168.1.2",
-	"server" : "192.168.1.100"
-}; //list all the resources and addresses for the splash screen. 'Id' should correspond to the html document. 'Address' should be the network address for the resource minus the 'http://', eg. '"nas" : "192.168.1.1:8080/gui"'
+//These four variables define the content, layout and behavior of the buttons.
+//===========================================================================================================
+var networkResources = [
+	{typeClass: "xbmc", buttonId: "xbmc_living_room", address: "192.168.1.101:8080", label: "Living Room"},
+	{typeClass: "xbmc", buttonId: "xbmc_upstairs", address: "192.168.1.104:8080", label: "Upstairs"},
+	{typeClass: "xbmc", buttonId: "xbmc_bedroom", address: "192.168.1.111:8080", label: "Bedroom"},
+	{typeClass: "services", buttonId: "utorrent", address: "192.168.1.100:8080/gui", label: "µTorrent"},
+	{typeClass: "services", buttonId: "nas", address: "192.168.1.103", label: "Fileserver"},
+	{typeClass: "routers", buttonId: "router1", address: "192.168.1.1", label: "Upstairs Router"},
+	{typeClass: "routers", buttonId: "router2", address: "192.168.1.2", label: "Downstairs Router"}
+]; //list all the resources and addresses for the splash screen.
+//typeClass:  Use to make groups of resources. The names and number of 'typeClass' is arbitrary, but each one must be assigned to a column in the 'typeClassList' array below. data type: string
+//buttonId:  A unique identifier for each button. data type: string
+//address:  The address or IP address of the resource on the network. Use the form 'address[: port][/path]' without the 'http://' eg. '192.168.1.100: 8080/gui'. data type: string
+//label:  Defines the text on the button. Can be any string, but more than about 20 characters may overflow the button. data type: string
+
+var typeClassList = [
+	{typeClass: "xbmc", column: "left"},
+	{typeClass: "services", column: "right"},
+	{typeClass: "routers", column: "right"}
+]; //define the layout for the resources. Each 'typeClass' is displayed in a separate box in the specified column. 
+//typeClass:  Must correlate to 'typeClass' in the networkResources array. data type: string
+//column:  Specify "left" or "right". data type: string
+
+var webserverAddress = "192.168.1.100"; //define the address of the webserver
+
+var openInNewTab = true; //do you want to open links in a new tab or not? data type: boolean (true/false)
+//===========================================================================================================
 
 $(document).ready(function(){
-	var $buttons = $('.button'); //cache selector for the clickable "buttons" found in the <li>'s
 	var $chalkboard = $('#chalkboard');
+	var $left_column = $('#left_column');
+	var $right_column = $('#right_column');
 
-//pulls the data from the chalkboard.txt file on the server and displays it in the chalkboard
+//pull the data from the chalkboard.txt file on the server and displays it in the chalkboard
 	$.ajax({
-		url: 'http://' + networkResources['server'] + '/chalkboard.txt', //build the URI
+		url: 'http://' + webserverAddress + '/chalkboard.txt', //build the URI
 		dataType: 'text',
 		success: function(data){
 			if(data){$chalkboard.html(data); //put the contents of the text file into the html
@@ -30,43 +50,62 @@ $(document).ready(function(){
 		error: function(){
 			$chalkboard.html("Here is the chalkboard! Leave notes on it. When you click out of this box, it will save automatically!"); //leave a note if the text file doesn't exist. The php script will create the file when it runs.
 		}
-	}); //end ajax pull
+	}); //end ajax GET
 
-//send changes to the chalkboard to the server whenever the user changes focus
+//send changes to the chalkboard to the server whenever the user changes focus away from the chalkboard
 	$chalkboard.blur(function(){
 		$.ajax({
 			type: 'POST',
-			url: 'http://' + networkResources['server'] + '/save_chalkboard.php', //build the URL. Assumes the script is in the server root. Modify the path accordingly.
+			url: 'http://' + webserverAddress + '/save_chalkboard.php', //build the URL. Assumes the script is in the server root. Modify the path accordingly.
 			data: {"content" : $chalkboard.val()}, //grab the contents of the textarea and format it for the php script
 			dataType: 'text'
-		}); //end ajax post
-	}); //end blur
+		}); //end ajax POST
+	}); //end blur function
+	
+//create the buttons
+	var networkResourcesLength = networkResources.length;
+	var typeClassListLength = typeClassList.length;
+	//Iterate over the typeClassList array and put the type groups in the correct column. Then, create the buttons in the correct group.
+	for (var i=0; i<typeClassListLength; i++){
+		if(typeClassList[i].column === "left"){ //work on the left column
+			$left_column.append('<ul id="' + typeClassList[i].typeClass + '" class="type" ></ul>'); //create the typeClass group
+				for (var j=0; j<networkResourcesLength; j++){ //iterate over the networkResources array...
+					if(networkResources[j].typeClass === typeClassList[i].typeClass){ //...and find the resources that belong in each group
+						$('#'+typeClassList[i].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[j].buttonId + '" data-address="' + networkResources[j].address + '"><p>' + networkResources[j].label + '</p><div class="status"></div></div></li>'); //create the button and store the corresponding address data in the DOM as a custom data attribute.
+					}
+				}
+		}else if(typeClassList[i].column === "right"){ //work on the right column, doing the same thing
+			$right_column.append('<ul id="' + typeClassList[i].typeClass + '" class="type" ></ul>');
+				for (var k=0; k<networkResourcesLength; k++){
+					if(networkResources[k].typeClass === typeClassList[i].typeClass){
+						$('#'+typeClassList[i].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[k].buttonId + '" data-address="' + networkResources[k].address + '"><p>' + networkResources[k].label + '</p><div class="status"></div></div></li>');
+					}
+				}
+
+		}
+	}
+
+//now that the buttons are created, we'll cache the selectors to apply effects and behaviors
+	var $buttons = $('.button'); //cache selector for the clickable "buttons" found in the <li>'s
+//	var $status = $('.status'); //cache selector for status lights.  TODO:  make status lights work!!
 
 //add effects when the user mouses over the buttons
 	$buttons.mouseenter(function(){
 		$(this).addClass("pressed"); //adds underglow effect
-		$(this).effect("bounce", { times:2, distance:10}, 300); //bounce!! this effect misbehaves in IE and Firefox. 
+		$(this).effect("bounce", { times: 2, distance: 10}, 300); //bounce!! this effect misbehaves in IE and Firefox. TODO:  fix the CSS so this works in Firefox
 	})
 	.mouseleave(function(){
 		$(this).removeClass("pressed"); //removes underglow effect
 	})
 	.click(function(){
-		var url = "http://" + networkResources[$(this).attr("id")]; //create the url
-//Open the location. Uncomment one of these two lines to choose the behavior.
-		window.open(url); //Open in new tab
-//		window.location.href = url; //Open in same tab
+		var url = "http://" + $(this).attr('data-address'); //create the url. We associated the correct address with the DOM element when we created it.
+//Open the location.
+		if(openInNewTab){
+			window.open(url); //Open in a new tab
+		}else{
+			window.location.href = url; //Open in same tab
+		}
+	
 	}); //end $buttons event listener
 
 }); //end document.ready
-
-/*
-PHP script that saves the chalkboard to file. Put the code between the tear lines into a file called "save_chalkboard.php" in the server root directory. Make sure your server is set up to run PHP.
-----------------------------------
-<?php 
-$content = $_POST['content']; 
-$fp = fopen("chalkboard.txt","w"); 
-fwrite($fp , $content); 
-fclose($fp); 
-?>
-----------------------------------
-*/
