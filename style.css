@@ -1,3 +1,26 @@
+/* CSS Version 0.1 July 31, 2012 */
+/* https://github.com/begillespie/Home_LAN_Splash.git */
+/*=========================================================================================*/
+/* Edit these rules to customize the button background images */
+#xbmc .button{
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/xbmc-logo.png");
+}
+#utorrent.button{
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/utorrent_icon.png");
+}
+#nas.button{
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/Server.png");
+}
+#routers .button{
+	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/wi-fi.png");
+}
+/*=========================================================================================*/
+/* Edit this rule to customize the chalkboard font */
+@font-face {
+    font-family: "Chalkboard";
+/*    src: url("whatever it takes.ttf"); /* http://www.fontspace.com/brittney-murphy/whatever-it-takes */
+ }
+/*=========================================================================================*/
 h1 {
 	font-size: 60px;
 }
@@ -19,10 +42,6 @@ h1 {
 #calendar{
 	display: inline-block;
 }
-@font-face {
-    font-family: "Chalkboard";
-/*    src: url("whatever it takes.ttf"); /* http://www.fontspace.com/brittney-murphy/whatever-it-takes */
- }
 #chalkboard_container {
 	display: inline-block;
 	vertical-align: top;
@@ -48,18 +67,6 @@ h1 {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
 	border-radius: 10px;
-}
-#xbmc .button{
-	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/xbmc-logo.png");
-}
-#utorrent.button{
-	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/utorrent_icon.png");
-}
-#nas.button{
-	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/Server.png");
-}
-#routers .button{
-	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/wi-fi.png");
 }
 .buttonwrapper {
 	padding: 15px;
