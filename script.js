@@ -1,6 +1,6 @@
 //tested in Chrome 22.0.1207.1
 //The jqueryui bounce effect misbehaves in IE and Firefox
-//Version:  0.6 30July2012
+//Version:  0.7 31July2012
 //https://github.com/begillespie/Home_LAN_Splash.git
 
 //These four variables define the content, layout and behavior of the buttons.
@@ -27,16 +27,14 @@ var typeClassList = [
 //typeClass:  Must correlate to 'typeClass' in the networkResources array. data type: string
 //column:  Specify "left" or "right". data type: string
 
-var webserverAddress = "192.168.1.100"; //define the address of the webserver
+var webserverAddress = "192.168.1.100"; //define the address and path to this app on the webserver
 
 var openInNewTab = true; //do you want to open links in a new tab or not? data type: boolean (true/false)
 //===========================================================================================================
-
 $(document).ready(function(){
 	var $chalkboard = $('#chalkboard');
 	var $left_column = $('#left_column');
 	var $right_column = $('#right_column');
-
 //pull the data from the chalkboard.txt file on the server and displays it in the chalkboard
 	$.ajax({
 		url: 'http://' + webserverAddress + '/chalkboard.txt', //build the URI
@@ -51,44 +49,46 @@ $(document).ready(function(){
 			$chalkboard.html("Here is the chalkboard! Leave notes on it. When you click out of this box, it will save automatically!"); //leave a note if the text file doesn't exist. The php script will create the file when it runs.
 		}
 	}); //end ajax GET
-
 //send changes to the chalkboard to the server whenever the user changes focus away from the chalkboard
 	$chalkboard.blur(function(){
 		$.ajax({
 			type: 'POST',
-			url: 'http://' + webserverAddress + '/save_chalkboard.php', //build the URL. Assumes the script is in the server root. Modify the path accordingly.
+			url: 'http://' + webserverAddress + '/save_chalkboard.php', //build the URL.
 			data: {"content" : $chalkboard.val()}, //grab the contents of the textarea and format it for the php script
 			dataType: 'text'
 		}); //end ajax POST
 	}); //end blur function
-	
 //create the buttons
 	var networkResourcesLength = networkResources.length;
 	var typeClassListLength = typeClassList.length;
 	//Iterate over the typeClassList array and put the type groups in the correct column. Then, create the buttons in the correct group.
 	for (var i=0; i<typeClassListLength; i++){
 		if(typeClassList[i].column === "left"){ //work on the left column
-			$left_column.append('<ul id="' + typeClassList[i].typeClass + '" class="type" ></ul>'); //create the typeClass group
+			$left_column.append(createTypeGroupHTML(i)); //create the typeClass group
 				for (var j=0; j<networkResourcesLength; j++){ //iterate over the networkResources array...
 					if(networkResources[j].typeClass === typeClassList[i].typeClass){ //...and find the resources that belong in each group
-						$('#'+typeClassList[i].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[j].buttonId + '" data-address="' + networkResources[j].address + '"><p>' + networkResources[j].label + '</p><div class="status"></div></div></li>'); //create the button and store the corresponding address data in the DOM as a custom data attribute.
+						createButtonHTML(i,j); //generate the html
 					}
 				}
 		}else if(typeClassList[i].column === "right"){ //work on the right column, doing the same thing
-			$right_column.append('<ul id="' + typeClassList[i].typeClass + '" class="type" ></ul>');
+			$right_column.append(createTypeGroupHTML(i));
 				for (var k=0; k<networkResourcesLength; k++){
 					if(networkResources[k].typeClass === typeClassList[i].typeClass){
-						$('#'+typeClassList[i].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[k].buttonId + '" data-address="' + networkResources[k].address + '"><p>' + networkResources[k].label + '</p><div class="status"></div></div></li>');
+						createButtonHTML(i,k);
 					}
 				}
 
 		}
 	}
-
+	function createTypeGroupHTML(index){
+		return '<ul id="' + typeClassList[index].typeClass + '" class="type" ></ul>'; //creates html for typeClass groups
+	}
+	function createButtonHTML(typeIndex, buttonIndex){
+		return $('#'+typeClassList[typeIndex].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[buttonIndex].buttonId + '" data-address="' + networkResources[buttonIndex].address + '"><p>' + networkResources[buttonIndex].label + '</p><div class="status"></div></div></li>'); //creates the buttons and stores the corresponding address string in the DOM as a custom data element
+	}
 //now that the buttons are created, we'll cache the selectors to apply effects and behaviors
 	var $buttons = $('.button'); //cache selector for the clickable "buttons" found in the <li>'s
 //	var $status = $('.status'); //cache selector for status lights.  TODO:  make status lights work!!
-
 //add effects when the user mouses over the buttons
 	$buttons.mouseenter(function(){
 		$(this).addClass("pressed"); //adds underglow effect
@@ -99,13 +99,6 @@ $(document).ready(function(){
 	})
 	.click(function(){
 		var url = "http://" + $(this).attr('data-address'); //create the url. We associated the correct address with the DOM element when we created it.
-//Open the location.
-		if(openInNewTab){
-			window.open(url); //Open in a new tab
-		}else{
-			window.location.href = url; //Open in same tab
-		}
-	
+		(openInNewTab) ? window.open(url) :  window.location.href = url; //Open the location.
 	}); //end $buttons event listener
-
 }); //end document.ready
