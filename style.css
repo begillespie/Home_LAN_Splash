@@ -94,7 +94,7 @@ h1 {
 	background-position: center;
 	background-repeat: no-repeat;
 }
-.pressed {
+.highlight {
 	-moz-box-shadow: 0 0 2em orange;
 	-webkit-box-shadow: 0 0 2em orange;
 	box-shadow: 0 0 2em orange;	

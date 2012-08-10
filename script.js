@@ -28,7 +28,7 @@ var typeClassList = [
 //typeClass:  Must correlate to 'typeClass' in the networkResources array. DATA TYPE: string
 //column:  Specify "left" or "right". DATA TYPE: string
 
-var scriptPath = "192.168.1.100/testbranch"; //define the address and path for the server scripts. DATA TYPE: string
+var scriptPath = "192.168.1.100"; //define the address and path for the server scripts. DATA TYPE: string
 
 var openInNewTab = true; //do you want to open links in a new tab or not? DATA TYPE: boolean (true/false)
 
@@ -97,11 +97,11 @@ $(document).ready(function(){
 				// <ul id="foo" class="type"></ul>
 
 	function createButtonHTML(typeIndex, buttonIndex){
-		return $('#'+typeClassList[typeIndex].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[buttonIndex].buttonId + '" data-address="' + networkResources[buttonIndex].address + '"><p>' + networkResources[buttonIndex].label + '</p><div class="status down"></div></div></li>'); //creates the buttons and stores the corresponding address string in the DOM as a custom data element
+		$('#'+typeClassList[typeIndex].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[buttonIndex].buttonId + '" data-address="' + networkResources[buttonIndex].address + '"><p>' + networkResources[buttonIndex].label + '</p><div class="status down"></div></div></li>'); //creates the buttons and stores the corresponding address string in the DOM as a custom data element
 	}
 				//html:
 				// <li class="buttonwrapper">
-				//   <div class="button" id="bar" data-address="[address]">
+				//   <div class="button" id="bar" data-address="[address]">  <--'data-address' is a custom HTML5 data element. We'll call on that later to make this enire <div> act as a clickable button
 				//     <p>THIS IS A BUTTON</p>
 				//     <div class="status down"></div>
 				//   </div>
@@ -124,17 +124,17 @@ $(document).ready(function(){
 				if (data !== ("0" || "404")){
 					$current.removeClass('down');
 				}
-			}
+			} //end success callback function
 		}) //end ajax GET
 	}) //end $status.each()
 
 //add effects when the user mouses over the buttons
 	$buttons.mouseenter(function(){
-		$(this).addClass("pressed"); //adds underglow effect
+		$(this).addClass("highlight"); //adds underglow effect
 		$(this).effect("bounce", { times: 2, distance: 10}, 300); //bounce!! this effect misbehaves in IE and Firefox. TODO:  fix the CSS so this works in Firefox
 	})
 	.mouseleave(function(){
-		$(this).removeClass("pressed"); //removes underglow effect
+		$(this).removeClass("highlight"); //removes underglow effect
 	})
 	.click(function(){
 		var url = "http://" + $(this).attr('data-address'); //create the url. We associated the correct address with the DOM element when we created it.

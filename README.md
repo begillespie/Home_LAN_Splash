@@ -8,8 +8,8 @@ It also has space to embed the family calendar using Google Calendar or similar.
 This project uses a php script to write text to the server. For that reason, I don't recommend using this on a public-facing server. It is intended for use on the LAN.
 
 HOW TO USE THIS
-Put all the files together on a PHP-enabled webserver.
-Open the index.html file and were indicated, paste the embed code for the calendar you want to use. A calendar sized 800x600px or smaller will work best.
-Open the script.js file and enter the correct information to define your logical network. There are 4 variables to set.
-You may define background images for the buttons in the style.css file. If no image is defined or found, the button will default to grey.
-Navigate to index.html in your browser.
+1. Put all the files together on a webserver with PHP enabled and the php-curl library installed.
+2. Open the index.html file and where indicated, paste the embed code for the calendar you want to use. A calendar sized 800x600px or smaller will work best.
+3. Open the script.js file and enter the correct information to define your logical network. There are 5 variables to set in order to control the layout and function of the page.
+4. You may define background images for the buttons in the style.css file. If no image is defined or found, the button will default to grey.
+5. Navigate to index.html in your browser.
