@@ -1,88 +1,59 @@
 //tested in Chrome 22.0.1207.1
 //The jqueryui bounce effect misbehaves in IE and Firefox
-//Version:  0.8 02August2012
 //https://github.com/begillespie/Home_LAN_Splash.git
-
-
-//These five variables define the content, layout and behavior of the page.
-//===========================================================================================================
-var networkResources = [
-	{typeClass: "xbmc", buttonId: "xbmc_living_room", address: "192.168.1.101:8080", label: "Living Room"},
-	{typeClass: "xbmc", buttonId: "xbmc_upstairs", address: "192.168.1.104:8080", label: "Upstairs"},
-	{typeClass: "xbmc", buttonId: "xbmc_bedroom", address: "192.168.1.111:8080", label: "Bedroom"},
-	{typeClass: "services", buttonId: "utorrent", address: "192.168.1.100:8080/gui", label: "µTorrent"},
-	{typeClass: "services", buttonId: "nas", address: "192.168.1.103", label: "Fileserver"},
-	{typeClass: "routers", buttonId: "router1", address: "192.168.1.1", label: "Upstairs Router"},
-	{typeClass: "routers", buttonId: "router2", address: "192.168.1.2", label: "Downstairs Router"}
-]; //list all the resources and addresses for the splash screen.
-//typeClass:  Use to make groups of resources. The names and number of 'typeClass' is arbitrary, but each one must be assigned to a column in the 'typeClassList' array below. DATA TYPE: string
-//buttonId:  A unique identifier for each button. DATA TYPE: string
-//address:  The address or IP address of the resource on the network. Use the form 'address[:port][/path]' without the 'http://' eg. '192.168.1.100:8080/gui'. DATA TYPE: string
-//label:  Defines the text on the button. Can be any string, but more than about 20 characters may overflow the button. DATA TYPE: string
-
-var typeClassList = [
-	{typeClass: "xbmc", column: "left"},
-	{typeClass: "services", column: "right"},
-	{typeClass: "routers", column: "right"}
-]; //define the layout for the resources. Each 'typeClass' is displayed in a separate box in the specified column. 
-//typeClass:  Must correlate to 'typeClass' in the networkResources array. DATA TYPE: string
-//column:  Specify "left" or "right". DATA TYPE: string
-
-var scriptPath = "192.168.1.100"; //define the address and path for the server scripts. DATA TYPE: string
-
-var openInNewTab = true; //do you want to open links in a new tab or not? DATA TYPE: boolean (true/false)
-
-var ajaxTimeout = 6; //specify the timeout in seconds. Longer timeout will give other systems more time to respond when we check them, but slow page load time. DATA TYPE: integer
-//===========================================================================================================
-
 
 $(document).ready(function(){
 
 	var $chalkboard = $('#chalkboard');
 	var $left_column = $('#left_column');
 	var $right_column = $('#right_column');
-	
-//pull the data from the chalkboard.txt file on the server and displays it in the chalkboard
+
+// Insert the code for the calendar
+  $('#calendar').html(config.calendarPath);
+
+// Pull the data from the chalkboard.txt file on the server and displays it in the chalkboard
 	$.ajax({
-		url: 'http://' + scriptPath + '/chalkboard.txt', //build the URI
+		url: 'write/chalkboard.txt',
 		dataType: 'text',
 		success: function(data){
-			if(data){$chalkboard.html(data); //put the contents of the text file into the html
+			if(data){$chalkboard.text(data); //put the contents of the text file into the html
 		} else {
 			$chalkboard.html("Here is the chalkboard! Leave notes on it. When you click out of this box, it will save automatically!"); //leave a note if there is nothing in the file
 			}
 		},
 		error: function(){
-			$chalkboard.html("Here is the chalkboard! Leave notes on it. When you click out of this box, it will save automatically!"); //leave a note if the text file doesn't exist. The php script will create the file when it runs.
+			$chalkboard.text("Here is the chalkboard! Leave notes on it. When you click out of this box, it will save automatically!"); //leave a note if the text file doesn't exist. The php script will create the file when it runs.
 		}
 	}); //end ajax GET
 	
-//send changes to the chalkboard to the server whenever the user changes focus away from the chalkboard
+// Send changes to the chalkboard to the server whenever the user changes focus away from the chalkboard
+// The webserver needs write permission to the 'write' directory
 	$chalkboard.blur(function(){
 		$.ajax({
 			type: 'POST',
-			url: 'http://' + scriptPath + '/save_chalkboard.php', //build the URL.
+			url: 'scripts/save_chalkboard.php',
 			data: {"content" : $chalkboard.val()}, //grab the contents of the textarea and format it for the php script
 			dataType: 'text'
 		}); //end ajax POST
 	}); //end blur function
 	
-//create the buttons
-	var networkResourcesLength = networkResources.length;
-	var typeClassListLength = typeClassList.length;
-	//Iterate over the typeClassList array and put the type groups in the correct column. Then, create the buttons in the correct group.
-	for (var i=0; i<typeClassListLength; i++){
-		if(typeClassList[i].column === "left"){ //work on the left column
+// Create the buttons
+	var networkResourcesLength = config.networkResources.length;
+	var typeClassListLength = config.typeClassList.length;
+
+// Iterate over the typeClassList array and put the type groups in the correct column. Then, create the buttons in the correct group.
+	for (var i=0; i < typeClassListLength; i++) {
+		if(config.typeClassList[i].column === "left") { //work on the left column
 			$left_column.append(createTypeGroupHTML(i)); //create the typeClass group
-				for (var j=0; j<networkResourcesLength; j++){ //iterate over the networkResources array...
-					if(networkResources[j].typeClass === typeClassList[i].typeClass){ //...and find the resources that belong in each group
+				for (var j=0; j < networkResourcesLength; j++) { //iterate over the networkResources array...
+					if(config.networkResources[j].typeClass === config.typeClassList[i].typeClass) { //...and find the resources that belong in each group
 						createButtonHTML(i,j); //generate the html
 					}
 				}
-		}else if(typeClassList[i].column === "right"){ //work on the right column, doing the same thing
+		}else if(config.typeClassList[i].column === "right") { //work on the right column, doing the same thing
 			$right_column.append(createTypeGroupHTML(i));
-				for (var k=0; k<networkResourcesLength; k++){
-					if(networkResources[k].typeClass === typeClassList[i].typeClass){
+				for (var k=0; k < networkResourcesLength; k++) {
+					if(config.networkResources[k].typeClass === config.typeClassList[i].typeClass) {
 						createButtonHTML(i,k);
 					}
 				}
@@ -91,13 +62,13 @@ $(document).ready(function(){
 	}
 	
 	function createTypeGroupHTML(index){
-		return '<ul id="' + typeClassList[index].typeClass + '" class="type" ></ul>'; //creates html for typeClass groups
+		return '<ul id="' + config.typeClassList[index].typeClass + '" class="type" ></ul>'; //creates html for typeClass groups
 	}
 				//html:
 				// <ul id="foo" class="type"></ul>
 
 	function createButtonHTML(typeIndex, buttonIndex){
-		$('#'+typeClassList[typeIndex].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + networkResources[buttonIndex].buttonId + '" data-address="' + networkResources[buttonIndex].address + '"><p>' + networkResources[buttonIndex].label + '</p><div class="status down"></div></div></li>'); //creates the buttons and stores the corresponding address string in the DOM as a custom data element
+		$('#'+config.typeClassList[typeIndex].typeClass).append('<li class="buttonwrapper"><div class="button" id="' + config.networkResources[buttonIndex].buttonId + '" data-address="' + config.networkResources[buttonIndex].address + '"><p>' + config.networkResources[buttonIndex].label + '</p><div class="status down"></div></div></li>'); //creates the buttons and stores the corresponding address string in the DOM as a custom data element
 	}
 				//html:
 				// <li class="buttonwrapper">
@@ -116,9 +87,9 @@ $(document).ready(function(){
 			var checkURL = "http://" + $(this).parent().attr('data-address'); //we're acting on the .status div, but the address is stored in the parent .button object in the DOM
 			var $current = $(this); //the scope of $('this') changes within the $.ajax method.
 		$.ajax({
-			url: 'http://' + scriptPath + '/getHTTPHeader.php',
+			url: 'scripts/getHTTPHeader.php',
 			dataType: 'text',
-			data: {'url' : checkURL, 'timeout' : ajaxTimeout},
+			data: {'url' : checkURL, 'timeout' : config.ajaxTimeout},
 			success: function(data){ //check the status code. There is no callback for on error because the default is 'down'
 				data = data.substring(data.length - 3); //the PHP script returns a string consisting of the whole header with the HTTP status code echoed at the end. So, if we grab the last three characters, we have the HTTP status code.
 				if (data !== ("0" || "404")){
@@ -138,6 +109,6 @@ $(document).ready(function(){
 	})
 	.click(function(){
 		var url = "http://" + $(this).attr('data-address'); //create the url. We associated the correct address with the DOM element when we created it.
-		(openInNewTab) ? window.open(url) :  window.location.href = url; //Open the location.
+		(config.openInNewTab) ? window.open(url) :  window.location.href = url; //Open the location.
 	}); //end $buttons event listener
 }); //end document.ready

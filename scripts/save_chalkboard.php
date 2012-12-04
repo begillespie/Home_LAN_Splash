@@ -1,6 +1,6 @@
 <?php 
 $content = $_POST['content']; 
-$fp = fopen("chalkboard.txt","w"); 
+$fp = fopen("../write/chalkboard.txt","w"); 
 fwrite($fp , $content); 
 fclose($fp); 
 ?>

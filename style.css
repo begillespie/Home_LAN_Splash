@@ -14,13 +14,6 @@
 #routers .button{
 	background-image: url("https://dl.dropbox.com/u/18708566/icon_images/wi-fi.png");
 }
-/*=========================================================================================*/
-/* Edit this rule to customize the chalkboard font */
-@font-face {
-    font-family: "Chalkboard";
-/*    src: url("whatever it takes.ttf"); /* http://www.fontspace.com/brittney-murphy/whatever-it-takes */
- }
-/*=========================================================================================*/
 h1 {
 	font-size: 60px;
 }
@@ -47,6 +40,12 @@ h1 {
 	vertical-align: top;
 }
 #chalkboard{
+  font-family: 'The Girl Next Door', cursive;
+	font-size: 20pt;
+  line-height: 110%;
+	color: #fff;
+	border: solid #630 10px;
+	background: #3B653D;
 	width: 360px;
 	height: 572px;
 	padding: 5px;
@@ -55,10 +54,6 @@ h1 {
 	-webkit-border-radius: 25px;
 	-moz-border-radius: 25px;
 	border-radius: 25px;
-	font-family: Chalkboard;
-	font-weight: bold;
-	font-size: 30px;
-	color: #fff;
 }
 .type{
 	list-style: none;
@@ -135,11 +130,4 @@ h1 {
 	clear: both;
 	color: #595;
 	font-style: italic;
-	}
-#footer ul{
-	display: inline;
-	list-style: none;
-}
-.version{
-	text-align: right;
 }
