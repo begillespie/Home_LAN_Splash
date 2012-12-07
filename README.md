@@ -26,9 +26,9 @@ HOW TO USE
 
 2.  Clone this repo to your local machine.
 
-```
-git clone https://github.com/begillespie/Home_LAN_Splash.git
-```
+    ```
+    git clone https://github.com/begillespie/Home_LAN_Splash.git
+    ```
 
 3.  Open the js/config.js file and enter the data for your logical network. There are 5 parameters to set:
 
@@ -46,11 +46,11 @@ git clone https://github.com/begillespie/Home_LAN_Splash.git
 
 5.  If you want to use the persistent chalkboard, you will need to make a folder that the webserver can write to. In the Home_LAN_Splash directory (LINUX):
 
-```
-mkdir write
-sudo chown www-data write
-sudo chmod 775 write
-```
+    ```
+    mkdir write
+    sudo chown www-data write
+    sudo chmod 775 write
+    ```
 
 6.  Navigate to index.html in a Javascript-enabled browser.
 
