@@ -16,15 +16,19 @@ var chalkboardView = Backbone.View.extend({
     },
 
     saveText: function(){
-        console.log('saving update...');
-        var revision = this.model.get('_rev');
+        var savedModel = this.model;
+        console.log(savedModel);
+        var revision = savedModel.get('_rev');
+        console.log('saving update...rev '+revision);
         var updatedText = $('#chalkboard').val();
-        console.log(revision);
-        console.log(updatedText);
-/*        this.model.save({
+
+        savedModel.save({
             "_rev": revision,
             "text": updatedText
-        });
-//*/
+        },
+            {success: function(){
+                savedModel.fetch()
+                }
+            })
     }
 });

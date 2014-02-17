@@ -23,6 +23,7 @@ $(function(){
     var board = new chalkboard();
     board.fetch({
         success: function(){
+            console.log(board);
             new chalkboardView(
                 {model:board}
             );
