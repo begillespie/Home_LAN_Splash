@@ -19,5 +19,14 @@ $(function(){
     rightCol.render();
 
     $('#calendar').html(config.calendarPath);
+
+    var board = new chalkboard();
+    board.fetch({
+        success: function(){
+            new chalkboardView(
+                {model:board}
+            );
+        }
+    });
 });
 

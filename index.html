@@ -27,7 +27,7 @@
             </div>
             <div class="row">
                 <div id="calendar" class="col-lg-8">Calendar placeholder</div>
-                <div class="col-lg-4"><div id="chalkboard">Chalkboard</div></div>
+                <div id="chalkboard-container" class="col-lg-4"></div>
             </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -45,6 +45,10 @@
 
             <script type="text/template" id="buttontemplate">
                 <p><%- buttonLabel %></p>
+            </script>
+
+            <script type="text/template" id="chalkboardtemplate">
+                <textarea id="chalkboard"><%- text %></textarea>
             </script>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -66,6 +70,8 @@
         <script src='js/config.js'></script>
         <script src='js/app.js'></script>
 
+        <script src='js/models/chalkboard.js'></script>
+        <script src='js/views/chalkboardview.js'></script>
 
     </body>
 
