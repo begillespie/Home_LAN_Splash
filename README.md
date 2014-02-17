@@ -13,7 +13,7 @@ This is tested and works in Chrome. Under Firefox and IE, I've been having probl
 AUTHOR
 ------
 
-By Brian Gillespie, 2012
+By Brian Gillespie, 2012-2014
 
 @begillespie
 
