@@ -5,6 +5,7 @@ $(function(){
         return item.column
     });
 
+    // Create the view objects for each column
     var leftCol = new targetListView({
         el: '#left',
         collection: new targetCollection(sortCols.left)
@@ -15,18 +16,19 @@ $(function(){
         collection: new targetCollection(sortCols.right)
     });
 
+    // Render the views
     leftCol.render();
     rightCol.render();
 
+    // Grab the embed code for the calendar and insert it into the DOM
     $('#calendar').html(config.calendarPath);
 
+    // Create the chalkboard object
     var board = new chalkboard();
+    // Fetch chalkboard data from the server, then render it.
     board.fetch({
         success: function(){
-            console.log(board);
-            new chalkboardView(
-                {model:board}
-            );
+            new chalkboardView({model:board});
         }
     });
 });

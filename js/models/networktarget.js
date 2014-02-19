@@ -1,4 +1,5 @@
 var Target = Backbone.Model.extend({
+// Model for the network location. It holds enough data to render and build a link.
     defaults: {
         buttonId : "", //unique ID
         buttonLabel : "placeholder", //Label text

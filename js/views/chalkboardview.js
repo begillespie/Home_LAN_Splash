@@ -1,4 +1,6 @@
 var chalkboardView = Backbone.View.extend({
+// View for the persistent chalkboard. It uses CouchDB to store the data.
+    
     el: '#chalkboard-container',
     template: _.template($('#chalkboardtemplate').html()),
 
@@ -15,17 +17,19 @@ var chalkboardView = Backbone.View.extend({
         focusout: 'saveText'
     },
 
+// Save updated contents of the textarea on blur
     saveText: function(){
+// Keep a reference to the model; the scope of 'this.' changes.
         var savedModel = this.model;
-        console.log(savedModel);
         var revision = savedModel.get('_rev');
-        console.log('saving update...rev '+revision);
         var updatedText = $('#chalkboard').val();
 
+// CouchDB expects the revision number with a PUT request.
         savedModel.save({
             "_rev": revision,
             "text": updatedText
         },
+// Success callback to get the new revision number back from the server.
             {success: function(){
                 savedModel.fetch()
                 }

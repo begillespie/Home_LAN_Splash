@@ -1,4 +1,5 @@
 var targetView = Backbone.View.extend({
+// View for the buttons that display and link to LAN resources.
 
     tagName: 'li',
     className: 'button',
@@ -9,7 +10,6 @@ var targetView = Backbone.View.extend({
         return this;
     },
 
-//*
     events: {
         'click' : 'openLink'
     },
@@ -17,6 +17,5 @@ var targetView = Backbone.View.extend({
     openLink: function(){
         alert(this.model.get('address'));
     }
-//*/
 
 });
