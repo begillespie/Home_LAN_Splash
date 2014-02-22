@@ -16,8 +16,11 @@ var config = {
 //   buttonLabel:  Defines the text on the button. Can be any string, but more than about 20 characters may overflow the button. DATA TYPE: string
 //   column: Which column to place the button in. Must be either 'left' or 'right'. Anything else, and it won't render. DATA TYPE: string
 
-  calendarPath : '<iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=en.usa%23holiday%40group.v.calendar.google.com&amp;color=%23AB8B00&amp;ctz=America%2FNew_York" style=" border-width:0 " width="100%" height="600" frameborder="0" scrolling="no"></iframe>'
+  calendarPath : '<iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=en.usa%23holiday%40group.v.calendar.google.com&amp;color=%23AB8B00&amp;ctz=America%2FNew_York" style=" border-width:0 " width="100%" height="600" frameborder="0" scrolling="no"></iframe>',
 // Embed code for your web calendar. DATA TYPE: string
 
-}
+  databaseRoute: 'http://192.168.1.102/couchdb/chalkboard/',
+// Route to the CouchDB database. You will need to create the chalkboard database and document that this app will use.
 
+  databaseDocId: 'ef704f73134837601744efcd11000fed'
+}

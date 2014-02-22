@@ -5,8 +5,19 @@ var targetView = Backbone.View.extend({
     className: 'button',
     template: _.template($('#buttontemplate').html()),
 
+    initialize: function(){
+        this.model.bind('change', this.render, this);
+    },
+    
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        console.log('rendering '+this.model.get('buttonLabel')+' down: '+this.model.get('down'));
+        var theButton = this.model;
+        if(this.model.get('down')){
+            var isDown = 'down';
+        }else{
+            var isDown = 'up';
+        }
+        this.$el.removeClass('up down').addClass(isDown).html(this.template(this.model.toJSON()));
         return this;
     },
 
@@ -15,7 +26,8 @@ var targetView = Backbone.View.extend({
     },
 
     openLink: function(){
-        alert(this.model.get('address'));
+        var url = "http://"+this.model.get('address');
+        window.open(url);
     }
 
 });

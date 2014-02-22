@@ -2,7 +2,7 @@ li {
     list-style: none;
     height: 100px;
     border: solid black 3px;
-    border-radius: 3px;
+    border-radius: 10px;
     text-align: center;
     margin: 5 0;
 }
@@ -23,3 +23,8 @@ li {
     -moz-border-radius: 25px;
     border-radius: 25px;
 }
+
+.down{
+    border: solid red 3px;
+}
+
