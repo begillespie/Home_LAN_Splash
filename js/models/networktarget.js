@@ -19,9 +19,9 @@ var Target = Backbone.Model.extend({
             dataType: 'json',
             data: {url: checkURL},
             success: function(data){ // Script returns an integer status code
-                var codeType = data.toString()[0]; // Take 2xx or 3xx = up
-                if (codeType == (2 || 3)){
-                    t.set({down:false}); // Models default to down.
+                var codeType = Math.floor(data/100); // Take 2xx or 3xx = up
+                if (codeType == 2 || codeType == 3) {
+                    t.set({down:false}); // Models default to down. Change listener in targetView rerenders.
                 };
             }
         });
